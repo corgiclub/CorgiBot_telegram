@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*
 import telebot
 from config import TOKEN
 # from pixivBot.main import main
