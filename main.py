@@ -36,8 +36,8 @@ def get_weather(message):
 def sticker(message):
     print(message)
     print("Sticker id Get:", message.sticker.file_id)
-    bot.reply_to(message, f"想必你就是{message.from_user.first_name}吧。我日！是表情包！")
-    bot.reply_to(message, f"你这个表情包的id是: {message.sticker.file_id}")
+    bot.reply_to(message, "想必你就是{}吧。我日！是表情包！".format(message.from_user.first_name))
+    bot.reply_to(message, "你这个表情包的id是: {}".format(message.sticker.file_id))
     bot.send_sticker(message.chat.id, 'CAADBQADMQADrGw9CcqcHEC7hwa8Ag')
 
 
@@ -45,7 +45,7 @@ def sticker(message):
 def sticker(message):
     print(message)
     bot.reply_to(message, "我日！是图片！我必复读")
-    bot.send_message(message.chat.id,  f"想必你就是{message.from_user.first_name}吧。")
+    bot.send_message(message.chat.id,  "想必你就是{}吧。".format(message.from_user.first_name))
     bot.send_photo(message.chat.id, message.photo[0].file_id)
 
 # @bot.message_handler(func=lambda m: True)
