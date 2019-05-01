@@ -1,24 +1,44 @@
 import telebot
 from config import TOKEN
-from pixivBot.main import main
+# from pixivBot.main import main
+from weather import *
+import datetime
 bot = telebot.TeleBot(TOKEN)
 
-print(bot.get_me())
-@bot.message_handler(commands=['start', 'help'])
+@bot.message_handler(commands=['start'])
 def send_welcome(message):
-    bot.reply_to(message, "Howdy, how are you doing?")
+    bot.reply_to(message, "狗东西你好 我是CorgiBot")
 
-#
-# @bot.message_handler(regexp="来.*色图")
-# def handle_message(message):
-#     print(message)
-#     bot.reply_to(message, "狗东西看你妈呢")
+@bot.message_handler(commands=['help'])
+def send_help(message):
+    help_info = '''
+    天气查询: /weather 城市名
+    '''
+    bot.reply_to(message, help_info)
+
+@bot.message_handler(commands=['weather'])
+def get_weather(message):
+    print("* Weather Request: ", message)
+    city = message.text
+    city = city.replace('/weather', '').strip()
+    print("查询城市:", city)
+    status, weather_info = get_info(city)
+    print(status, weather_info)
+    if status == -1:
+        bot.reply_to(message, "你这个xjb输的城市名老子找不到啊？你再试试？")
+        bot.send_sticker(message.chat.id, 'CAADBQADQAADvXbGBbm8R2q8xH5QAg')
+    else:
+        bot.reply_to(message, weather_info)
+        bot.send_sticker(message.chat.id, 'CAADBQADCAADvXbGBYdALs5Bu1fNAg')
 
 @bot.message_handler(content_types=['sticker'])
 def sticker(message):
     print(message)
+    print("Sticker id Get:", message.sticker.file_id)
     bot.reply_to(message, f"想必你就是{message.from_user.first_name}吧。我日！是表情包！")
+    bot.reply_to(message, f"你这个表情包的id是: {message.sticker.file_id}")
     bot.send_sticker(message.chat.id, 'CAADBQADMQADrGw9CcqcHEC7hwa8Ag')
+
 
 @bot.message_handler(content_types=['photo'])
 def sticker(message):
@@ -44,5 +64,5 @@ def sticker(message):
 #     #
 #     if not ret:
 #         bot.reply_to(message, ret)
-#
+
 bot.polling()
